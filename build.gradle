@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin:'application'
+
+sourceCompatibility = 1.6
+mainClassName = "com.acuity.guftgu.main.Chat"
+
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'GuFtGu', 'Implementation-Version': 1.0
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.10'
+}
+    
+dependencies {
+    testCompile 'com.google.guava:guava:14.0',
+                'commons-lang:commons-lang:2.6',
+                'org.mockito:mockito-all:1.9.5',
+                'junit:junit:4.7'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+task chat (dependsOn: ['build'], description: 'Start chat...')<< {
+	def input
+    def console = System.console()
+    while (true) {
+        input = console.readLine('Command >  ')
+        if("exit".equals(input)) {
+            break
+        }else {
+            
+            javaexec {
+                main = 'com.acuity.guftgu.main.Chat'
+                classpath = sourceSets.main.runtimeClasspath
+                args input
+            }
+          
+        }
+    } 
+}
+
+
