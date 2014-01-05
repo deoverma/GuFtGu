@@ -3,8 +3,16 @@
  */
 package com.acuity.guftgu.main;
 
-import com.acuity.guftgu.processor.CommandFactory;
+import static com.acuity.guftgu.processor.CommandFactory.getInstance;
+
+import java.util.Map;
+
+import com.acuity.guftgu.entities.Person;
 import com.acuity.guftgu.processor.CommandProcessor;
+import com.acuity.guftgu.repositories.PersonRepository;
+import com.acuity.guftgu.repositories.RepositoryUtil;
+import com.acuity.guftgu.response.CommandResponse;
+import com.acuity.guftgu.response.DefaultCommandResponse;
 
 
 /**
@@ -17,8 +25,10 @@ public class Chat {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("Welcome user !! Lets Chat...");
-
+        if(args == null) {
+            return;
+        }
+        
         int indexOf = args[0].indexOf(":");
         String command = "";
 
@@ -26,9 +36,20 @@ public class Chat {
             command = args[0].substring(0, indexOf);
         }
 
-        CommandProcessor processor = CommandFactory.getInstance()
+        Map<String, Person> persons = RepositoryUtil.loadPersonRepository();
+        
+        PersonRepository.setPersons(persons);
+        CommandProcessor processor = getInstance()
                 .getCommandProcessor(command);
-        processor.processCommand(args[0]);
+        CommandResponse response = new DefaultCommandResponse();
+        try {
+            response = processor.processCommand(args[0]);
+            response.printResponse();
+        } catch (StringIndexOutOfBoundsException e) {
+            response.printResponse();
+        }
+        
+        RepositoryUtil.savePersonRepository(PersonRepository.getPersons());
 
     }
 

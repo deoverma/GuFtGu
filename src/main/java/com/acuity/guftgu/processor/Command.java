@@ -2,10 +2,10 @@ package com.acuity.guftgu.processor;
 
 public enum Command {
 
-    POST("posting", "posting: <text>"), 
-    READ("reading", "reading: <user>"), 
-    FOLLOW("following", "following: <user>"), 
-    WALL("wall", "wall: <user>");
+    POST("posting", "posting: <user name> -> <message>"), 
+    READ("reading", "reading: <user name>"), 
+    FOLLOW("following", "following: <user name> follows <another user>"), 
+    WALL("wall", "wall: <user name> wall");
 
     private String command;
 

@@ -1,12 +1,12 @@
 package com.acuity.guftgu.processor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.acuity.guftgu.processor.Command.FOLLOW;
 import static com.acuity.guftgu.processor.Command.POST;
 import static com.acuity.guftgu.processor.Command.READ;
 import static com.acuity.guftgu.processor.Command.WALL;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -36,7 +36,7 @@ public final class CommandFactory {
         return instance;
     }
 
-    public static CommandProcessor getCommandProcessor(String command) {
+    public CommandProcessor getCommandProcessor(String command) {
         CommandProcessor commandProcessor = processors.get(command);
         if (commandProcessor == null) {
             commandProcessor = new DefaultCommandProcessor();
